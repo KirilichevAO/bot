@@ -1,5 +1,5 @@
 from loader import dp
-from DataBase import add_new_user, find_user
+from DataBase import add_new_user, find_user, change_user, delete_user
 from aiogram.types import Message
 from Keybords import kb_main
 
@@ -22,4 +22,17 @@ async def find_user_command(massage: Message):
 @dp.message_handler(commands=['change'])
 async def change_user_command(massage: Message):
     name = massage.text.split()[1]
-    if name.isdigit()
+    if not name.isdigit():
+        await massage.answer(text=find_user((name,)))
+    else:
+        user_id, name, phone, comment = massage.text.split()[1:]
+        new_user = (name, phone, comment, user_id)
+        change_user(new_user)
+
+@dp.message_handler(commands=['del'])
+async def delete_user_command(massage: Message):
+    user_id = massage.text.split()[1]
+    if user_id.isdigit():
+        delete_user((int(user_id),))
+    else:
+        await massage.answer('Надо прислать id юзера!')

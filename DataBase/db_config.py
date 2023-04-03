@@ -17,3 +17,11 @@ def add_new_user(new_user: tuple):
 def find_user(name: tuple):
     user = corsor.execute('''SELECT * FROM user WHERE name=?''', name).fetchall()
     return user
+
+def change_user(new_data: tuple):
+    corsor.execute('''UPDATE user SET name=?, phone=?, comment=? WHERE user_id=?''', new_data)
+    connect.commit()
+
+def delete_user(user: tuple):
+    corsor.execute('''DELETE FROM user WHERE user_id=?''', user)
+    connect.commit()
